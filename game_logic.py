@@ -1,4 +1,5 @@
 import datetime
+from models import *
 from coinbase.wallet.client import Client
 
 currency_code = 'USD'  # can also use EUR, CAD, etc.
@@ -8,15 +9,17 @@ todays_date = str(datetime.datetime.now())[:10]
 
 
 def start_game(time):
-    newgame = Gameinfo(round_time= time)
+    game = Gameinfo.query.all()
+    if not game:
+        newgame = Gameinfo(round_time= time)
+        db.session.add(newgame)
+        db.session.commit()
 
-    db.session.add(newgame)
-    db.session.commit()
 
-def join_game():
-
-    newgameplayer = Gameplayer(r_id = get_current_round(),
-                                u_id = current_user_id())
+def join_game(user_id):
+    current_round = Gameinfo.query.order_by("id").first().id
+    newgameplayer = Gameplayer(r_id = current_round,
+                                u_id = user_id)
 
     db.session.add(newgameplayer)
     db.session.commit()
@@ -40,7 +43,7 @@ def buy_bitcoin(amount):
     db.session.commit()
 
     #Update the balance in the User Model
-    update balance = User.query.filter_by(username = current_user.username).first()
+    balance = User.query.filter_by(username = current_user.username).first()
     balance.game_bit_balance += bitcoin_diff
     balance.game_usd_balance += usd_diff
     db.session.commit()
@@ -63,7 +66,7 @@ def sell_bitcoin(amount):
     db.session.commit()
 
     #Update the balance in the User Model
-    update balance = User.query.filter_by(username = current_user.username).first()
+    balance = User.query.filter_by(username = current_user.username).first()
     balance.game_bit_balance += bitcoin_diff
     balance.game_usd_balance += usd_diff
     db.session.commit()
