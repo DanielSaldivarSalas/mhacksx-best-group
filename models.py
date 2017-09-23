@@ -6,17 +6,16 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
-
-class Profileinfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    picture = db.Column(db.BLOB)
     game_bit_balance = db.Column(db.Float)
     game_usd_balance = db.Column(db.Float)
 
+#game should be managed by admins
 class Gameinfo(db.Model):
     round_id = db.Column(db.Integer, primary_key = True)
     round_time = db.Column(db.DateTime, unique = True)
+
+class Gameplayer(db.Model):
+    round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Usergametransactions(db.Model):

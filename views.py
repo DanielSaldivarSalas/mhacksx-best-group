@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, url_for, session
 from forms import LoginForm, RegisterForm
-from models import User
+from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
@@ -71,7 +71,9 @@ def signup():
         #we're passing the data without hashing for testing purposes
         new_user = User(email=form.email.data,
                         username=form.username.data,
-                        password=hashed_password)
+                        password=hashed_password,
+                        game_bit_balance = 0.00,
+                        game_usd_balance = 100.00)
 
         db.session.add(new_user)
         db.session.commit()
@@ -104,5 +106,5 @@ def bitgame():
     print(current_user.id)
     user= User.query.filter_by(username=current_user.username).first_or_404()
     print(user)
-    profiles = profileinfo.query.all()
+    profiles = Profileinfo.query.all()
     return render_template('bitgame.html', name=current_user.username)
