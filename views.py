@@ -34,7 +34,7 @@ def index():
 def login():
     form = LoginForm()
 
-    #Check if the form is submitted, 
+    #Check if the form is submitted,
     if form.validate_on_submit():
         #usernames are unique so it's okay to return the first query we find
         user = User.query.filter_by(username=form.username.data).first()
@@ -44,9 +44,9 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('dashboard'))
-        
+
         return '<h1>Invalid username or password</h1>'
-        #return '<p>{}</p><p>{}</p>'.format(form.username.data, 
+        #return '<p>{}</p><p>{}</p>'.format(form.username.data,
         #                                   form.password.data)
 
     return render_template('login.html', form=form)
@@ -72,7 +72,7 @@ def signup():
         new_user = User(email=form.email.data,
                         username=form.username.data,
                         password=hashed_password)
-                        
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -98,3 +98,11 @@ def dashboard():
                             stats_low = str(round(float(r['low']),2)),
                             stats_volume = str(round(float(r['volume']),2)))
 
+@app.route('/bitgame')
+@login_required
+def bitgame():
+    print(current_user.id)
+    user= User.query.filter_by(username=current_user.username).first_or_404()
+    print(user)
+    profiles = profileinfo.query.all()
+    return render_template('bitgame.html', name=current_user.username)

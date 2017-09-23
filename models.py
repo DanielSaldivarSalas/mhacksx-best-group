@@ -7,20 +7,22 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
-class ProfileInfo(db.Model):
+class Profileinfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     picture = db.Column(db.BLOB)
     game_bit_balance = db.Column(db.Float)
     game_usd_balance = db.Column(db.Float)
 
-class GameInfo(db.Model):
+class Gameinfo(db.Model):
     round_id = db.Column(db.Integer, primary_key = True)
     round_time = db.Column(db.DateTime, unique = True)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class UserGameTransactions(db.Model):
+class Usergametransactions(db.Model):
     transaction_id = db.Column(db.Integer, primary_key = True)
-    game_round_id = db.Column(db.Integer, db.ForeignKey('GameInfo.round_id'))
+    game_round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
     amout = db.Column(db.Float)
+    bitcoin_price = db.Column(db.Float)
+    transaction_time = db.Column(db.DateTime)
     transaction_type = db.Column(db.Boolean)
