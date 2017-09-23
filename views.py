@@ -5,6 +5,7 @@ from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
+from game_logic import *
 
 import config
 import datetime
@@ -104,4 +105,13 @@ def dashboard():
 @app.route('/bitgame')
 @login_required
 def bitgame():
+    start_game(datetime.datetime.now())
+    return render_template('bitgame.html', name=current_user.username)
+
+@app.route('/bitgame/join')
+@login_required
+def join():
+    player = Gameplayer.query.filter_by(id = current_user.id).first()
+    if not player:
+        join_game(current_user.id)
     return render_template('bitgame.html', name=current_user.username)
