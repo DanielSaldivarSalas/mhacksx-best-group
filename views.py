@@ -106,7 +106,11 @@ def dashboard():
 @login_required
 def bitgame():
     start_game(datetime.datetime.now())
-    return render_template('bitgame.html', name=current_user.username)
+    bit_balance = User.query.filter_by(id = current_user.id).first().game_bit_balance
+    usd_balance = User.query.filter_by(id = current_user.id).first().game_usd_balance
+    return render_template('bitgame.html', bit_bal = bit_balance,
+                                        usd_val = usd_balance,
+                                        name = current_user.username)
 
 @app.route('/bitgame/join')
 @login_required
@@ -114,4 +118,9 @@ def join():
     player = Gameplayer.query.filter_by(id = current_user.id).first()
     if not player:
         join_game(current_user.id)
-    return render_template('bitgame.html', name=current_user.username)
+    bit_balance = User.query.filter_by(id = current_user.id).first().game_bit_balance
+    usd_balance = User.query.filter_by(id = current_user.id).first().game_usd_balance
+
+    return redirect(url_for('bitgame'), bit_bal = bit_balance,
+                                        usd_val = usd_balance,
+                                        name = current_user.username)
