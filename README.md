@@ -1,6 +1,6 @@
-# mhacksx-best-group
+# mhacksx-best-group <br>
 
-##Create Database
-python
-%from app import db
-%db.create_all()
+##Create Database <br>
+python  <br>
+%from app import db <br>
+%db.create_all()  <br>
