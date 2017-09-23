@@ -4,12 +4,22 @@ from forms import LoginForm, RegisterForm
 from models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from coinbase.wallet.client import Client
 
+import config
+import datetime
+import requests
+import json
 
+client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version='2017-09-22')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+BITCOIN_ENDPOINT = 'https://api.gdax.com'
 login_manager.login_view = 'login'
+currency_code = 'USD'
+accuracy = 5
+digital_type ='BTC-USD'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -66,7 +76,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return '<h1>New user has been created!</h>'
+        return redirect(url_for('login'))
         #return '<p>{}</p><p>{}</p><p>{}</p><h1>'.format(form.email.data, form.username.data, form.password.data)
 
 
@@ -75,5 +85,16 @@ def signup():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
+    price = client.get_spot_price(currency=currency_code)
+    data = requests.get(BITCOIN_ENDPOINT + '/products/' + digital_type + '/stats').text
+    r = json.loads(data)
+    return render_template('dashboard.html',
+                            name=current_user.username,
+                            bitcoin_val = str(price.amount),
+                            dollar_val = str(round(1/float(price.amount),accuracy)),
+                            timestamp = datetime.datetime.now(),
+                            stats_open = str(round(float(r['open']),2)),
+                            stats_high = str(round(float(r['high']),2)),
+                            stats_low = str(round(float(r['low']),2)),
+                            stats_volume = str(round(float(r['volume']),2)))
 
