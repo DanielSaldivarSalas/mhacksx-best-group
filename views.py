@@ -72,6 +72,7 @@ def signup():
         new_user = User(email=form.email.data,
                         username=form.username.data,
                         password=hashed_password,
+                        pic_url =form.pic_url.data,
                         game_bit_balance = 0.00,
                         game_usd_balance = 100.00)
 
