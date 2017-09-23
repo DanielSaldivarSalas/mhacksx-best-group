@@ -1,3 +1,8 @@
+<!-- Plotly.js for plotting the graph-->
+<header>
+</header>
+
+
 {% extends "bootstrap/base.html" %}
 
 {% block title %}
@@ -15,9 +20,51 @@ Demo App
     <div class="container">
 
       <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        {% for id in ids %}
+        <h3>{{id}}</h3>
+        <div id="{{id}}"></div>
+        {% endfor %}
+        <div class="row">
+          <!-- First box -->
+          <div class="col-md-4">
+            <h4 style="color:Black;"><a href = "http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html">Benefit of Investing Bitcoin</a></h4> <br>
+            <a href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html">
+              <img border="0" alt="Benefit of Investing Bitcoin" src="http://s3.amazonaws.com/main-newsbtc-images/2015/10/16090017/bitcoin-price.-bitcoin-vs-dollar.-illustration-arm-wrestling.-newsbtc-bitcoin-news.png" width="370" height="250">
+            </a>
+              <p><a class="btn btn-secondary" href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html" role="button">Read More »</a></p>
+          </div>
+          <!-- second box -->
+          <div class="col-md-4">
+            <h4 style="color:Black;"><a href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/">Younger Americans See Bitcoin As Investment Opportunity</a></h4>
+              <a href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/">
+              <img border="0" alt="Younger Americans See Bitcoin As Investment Opportunity" src="https://news.bitcoin.com/wp-content/uploads/2017/09/Younger-Americans-See-Bitcoin-As-Investment-Opportunity-Survey-Says-1-1068x1068.jpg" width="370" height="250">
+            </a>
+              <p><a class="btn btn-secondary" href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/"
+                  role="button">Read More »</a></p>
+          </div>
+          <!-- third box -->
+          <div class="col-md-4">
+            <h4 style="color:Black;"><a href="https://cointelegraph.com/news/does-bitcoin-meet-the-test-for-being-money">Does Bitcoin Meet the Test for Being Money?</a></h4>
+              <a href="https://cointelegraph.com/news/does-bitcoin-meet-the-test-for-being-money">
+              <img border="0" alt="Does Bitcoin Meet the Test for Being Money?" src="https://cointelegraph.com/images/725_Ly9jb2ludGVsZWdyYXBoLmNvbS9zdG9yYWdlL3VwbG9hZHMvdmlldy9lOTZjY2ViOGRjNGFlZDJlNmRlOWQ5ZmE3YTQ3Njg2Yy5qcGc=.jpg" width="370" height="250">
+            </a>
+              <p><a class="btn btn-secondary" href="https://cointelegraph.com/news/does-bitcoin-meet-the-test-for-being-money"
+                  role="button">Read More »</a></p>
+          </div>
+        </div> 
       </div>
-
     </div><!-- /.container -->
 {% endblock %}
+
+<footer>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script type="text/javascript">
+    var graph = {{graphJSON | safe }};
+    var ids = {{ids | safe }};
+    for (var i in graphs) {
+      Plotly.plot(ids[i], // the ID of the div, created above
+        graphs[i].data,
+        graphs[i].layout || {});
+    }
+  </script>
+</footer>
