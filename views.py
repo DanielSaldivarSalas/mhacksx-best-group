@@ -7,6 +7,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 from coinbase.wallet.client import Client
 
+import pandas as pd
+import numpy as np
+import plotly
 import config
 import datetime
 import requests
