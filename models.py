@@ -12,17 +12,18 @@ class User(UserMixin,db.Model):
 
 #game should be managed by admins
 class Gameinfo(db.Model):
-    round_id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
     round_time = db.Column(db.DateTime, unique = True)
 
 class Gameplayer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    r_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
+    r_id = db.Column(db.Integer, db.ForeignKey('gameinfo.id'))
     u_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Usergametransactions(db.Model):
-    transaction_id = db.Column(db.Integer, primary_key = True)
-    game_round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    game_round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.id'))
     amout = db.Column(db.Float)
     bitcoin_price = db.Column(db.Float)
     transaction_time = db.Column(db.DateTime)
