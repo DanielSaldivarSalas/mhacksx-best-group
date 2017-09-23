@@ -103,8 +103,4 @@ def dashboard():
 @app.route('/bitgame')
 @login_required
 def bitgame():
-    print(current_user.id)
-    user= User.query.filter_by(username=current_user.username).first_or_404()
-    print(user)
-    profiles = Profileinfo.query.all()
     return render_template('bitgame.html', name=current_user.username)

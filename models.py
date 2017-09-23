@@ -15,8 +15,9 @@ class Gameinfo(db.Model):
     round_time = db.Column(db.DateTime, unique = True)
 
 class Gameplayer(db.Model):
-    round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    r_id = db.Column(db.Integer, db.ForeignKey('gameinfo.round_id'))
+    u_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Usergametransactions(db.Model):
     transaction_id = db.Column(db.Integer, primary_key = True)
