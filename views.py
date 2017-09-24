@@ -6,20 +6,33 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
 
+import time
 import config
 import datetime
 import requests
 import json
+# import numpy as np
+
+import plotly.plotly as py
+import plotly.graph_objs as go
+import plotly.tools as tls
+py.plotly.tools.set_credentials_file(username=config.PL_KEY, api_key=config.PL_SECRET)
+
+
 
 client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version='2017-09-22')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-BITCOIN_ENDPOINT = 'https://api.gdax.com'
+GDAX_ENDPOINT = 'https://api.gdax.com'
 login_manager.login_view = 'login'
 currency_code = 'USD'
 accuracy = 5
 digital_type ='BTC-USD'
+month = 570
+month_in_sec = 2629746
+interval = 200
+# = 39450
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -85,21 +98,65 @@ def signup():
 
     return render_template('signup.html', form=form)
 
+def generate_graph(inp_y):
+    samples = 200
+    inp_x =list(range(0,samples))
+    trace = go.Scatter(x = inp_x, y = inp_y)
+    data = [trace]
+    py.plot(data, filename='basic-line', auto_open=False)
+
+def get_todays_stats():
+    return requests.get(GDAX_ENDPOINT + '/products/' + digital_type + '/stats').text
+
+def get_todays_price():
+    return json.loads(requests.get('https://api.coinbase.com/v2/prices/spot?currency=USD').text)
+
+def get_history_stats():
+    gran_limit_factor = 3/200
+    current_time_ISO = datetime.datetime.now().isoformat() #current time in iso (str)
+    start_time_ISO = datetime.datetime.utcfromtimestamp(month_in_sec*month).isoformat() + 'Z'
+    end = current_time_ISO 
+    start = start_time_ISO
+    gran = str(int(month_in_sec*gran_limit_factor))
+    history = requests.get(GDAX_ENDPOINT + '/products/' 
+        + digital_type + '/candles?' 
+        + 'start=' + start + '&' 
+        + 'end=' + end + '&' 
+        +'granularity=' + gran).text
+
+    history_day_close_price = []
+    history_filtered_data = json.loads(history)
+    index_close = 4 
+    for entry in history_filtered_data:
+        history_day_close_price.append(entry[index_close])
+    history_day_close_price =  history_day_close_price[::-1]
+    return history_day_close_price
+
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    price = client.get_spot_price(currency=currency_code)
-    data = requests.get(BITCOIN_ENDPOINT + '/products/' + digital_type + '/stats').text
-    r = json.loads(data)
+    #todays rates
+    price = get_todays_price();
+
+    #current stats
+    data = get_todays_stats();
+    todays_stats = json.loads(data)
+
+    #history stats
+    history = get_history_stats();
+    generate_graph(history);
+
     return render_template('dashboard.html',
                             name=current_user.username,
-                            bitcoin_val = str(price.amount),
-                            dollar_val = str(round(1/float(price.amount),accuracy)),
+                            bitcoin_val = str(price['data']['amount']),
+                            dollar_val = str(round(1/float(price['data']['amount']),accuracy)),
                             timestamp = datetime.datetime.now(),
-                            stats_open = str(round(float(r['open']),2)),
-                            stats_high = str(round(float(r['high']),2)),
-                            stats_low = str(round(float(r['low']),2)),
-                            stats_volume = str(round(float(r['volume']),2)))
+                            stats_open = str(round(float(todays_stats['open']),2)),
+                            stats_high = str(round(float(todays_stats['high']),2)),
+                            stats_low = str(round(float(todays_stats['low']),2)),
+                            stats_volume = str(round(float(todays_stats['volume']),2)))
 
 @app.route('/bitgame')
 @login_required
