@@ -217,7 +217,7 @@ def bitgame():
     print(get_leaderboard(1,client))
     return render_template('bitgame.html', bit_bal = bit_balance,
                                         usd_bal = usd_balance,
-                                        name = current_user.username)
+                                        name = current_user.username, results = get_leaderboard(1,client))
 
 @app.route('/bitgame/join')
 @login_required

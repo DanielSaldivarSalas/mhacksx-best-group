@@ -14,6 +14,7 @@ Bitgame
     <div class="container">
 
       <div class="starter-template">
+        <div>
         <h1>Bitcoin Game</h1>
 
         <p>Hello {{name}}!</p>
@@ -26,9 +27,49 @@ Bitgame
             {% else %}
             <button><a href="/bitgame/join">Join the Game</a></button>
             {% endif %}
-            <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script><div class="coinmarketcap-currency-widget" data-currency="bitcoin" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-stats="USD" data-statsticker="false"></div>
+
+            <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
+            </br>
+            </br>
+            <div class="coinmarketcap-currency-widget" data-currency="bitcoin" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-stats="USD" data-statsticker="false">
+            </div>
             <a href="https://twitter.com/intent/tweet?button_hashtag=bitcoin" class="twitter-hashtag-button" data-text="Want to try out your skills trading in a Bitcoin Simulator?? #bitcoin #everybitcounts" data-show-count="false">Tweet #bitcoin</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+          </br>
+          <div>
+            <table>
+              <tr>
+                <th>User</th>
+                <th>Balance</th>
+                <th>Rank</th>
+              </tr>
+              {% for result in results %}
+              <tr>
+                <td>{{ result[0] }}</td>
+                <td>{{ result[1] }}</td>
+                <td>{{ result[2] }}</td>
+              </tr>
+            {% endfor %}
+            </table>
+          </div>
       </div>
 
     </div><!-- /.container -->
+    <style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
 {% endblock %}
