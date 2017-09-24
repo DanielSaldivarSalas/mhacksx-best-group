@@ -114,3 +114,14 @@ def get_total_balance(user_id,client):
     currUser = User.query.filter_by(id = user_id).first()
     balance = currUser.game_usd_balance + currUser.game_bit_balance * get_bitcoin_price(client)
     return balance
+
+def get_transaction(user_id):
+    transactions = Usergametransactions.query.filter_by(user_id = user_id)
+    history = []
+    for x in transactions:
+        if x.transaction_type:
+            history.append([str(x.transaction_time), "Buy", x.amount, x.bitcoin_price])
+        else:
+            history.append([str(x.transaction_time), "Sell", x.amount, x.bitcoin_price])
+    print(history)
+    return history

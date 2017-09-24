@@ -51,6 +51,24 @@ Bitgame
               </tr>
             {% endfor %}
             </table>
+          </br>
+
+          <table>
+            <tr>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Bitcoin Price</th>
+            </tr>
+            {% for transaction in transactions %}
+            <tr>
+              <td>{{ transaction[0] }}</td>
+              <td>{{ transaction[1] }}</td>
+              <td>{{ transaction[2] }}</td>
+              <td>{{ transaction[3] }}</td>
+            </tr>
+          {% endfor %}
+          </table>
           </div>
       </div>
 
