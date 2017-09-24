@@ -106,7 +106,7 @@ def generate_graph(inp_y):
     inp_x =list(range(0,samples))
     trace = go.Scatter(x = inp_x, y = inp_y)
     data = [trace]
-    py.plot(data, filename='basic-line', auto_open=False)
+    py.plot(data, filename='bit-history', auto_open=False)
 
 def get_todays_stats():
     return requests.get(GDAX_ENDPOINT + '/products/' + digital_type + '/stats').text

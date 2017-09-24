@@ -16,6 +16,8 @@ SECRET_KEY = 'thisisasecret'
 CB_API_KEY = "XfuZZtRQoIT60ZbC"
 CB_API_SECRET = "eXFKOkiLqf47WKsvt5dDgoJAuF3VWFfW"
 
-PL_KEY = 'RihaoKang'
-PL_SECRET = 'R8ZY1frPW21K5amUegUp'
+#PL_KEY = 'RihaoKang'
+#PL_SECRET = 'R8ZY1frPW21K5amUegUp'
 
+PL_KEY = 'ShervinZandi'
+PL_SECRET = 'hKm84zIZthynUk3If08a'
