@@ -5,7 +5,6 @@ from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
-from game_logic import *
 
 import time
 import config
@@ -19,6 +18,7 @@ import plotly.graph_objs as go
 import plotly.tools as tls
 py.plotly.tools.set_credentials_file(username=config.PL_KEY, api_key=config.PL_SECRET)
 
+from game_logic import *
 
 
 client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version='2017-09-22')
@@ -118,18 +118,18 @@ def get_history_stats():
     gran_limit_factor = 3/200
     current_time_ISO = datetime.datetime.now().isoformat() #current time in iso (str)
     start_time_ISO = datetime.datetime.utcfromtimestamp(month_in_sec*month).isoformat() + 'Z'
-    end = current_time_ISO 
+    end = current_time_ISO
     start = start_time_ISO
     gran = str(int(month_in_sec*gran_limit_factor))
-    history = requests.get(GDAX_ENDPOINT + '/products/' 
-        + digital_type + '/candles?' 
-        + 'start=' + start + '&' 
-        + 'end=' + end + '&' 
+    history = requests.get(GDAX_ENDPOINT + '/products/'
+        + digital_type + '/candles?'
+        + 'start=' + start + '&'
+        + 'end=' + end + '&'
         +'granularity=' + gran).text
 
     history_day_close_price = []
     history_filtered_data = json.loads(history)
-    index_close = 4 
+    index_close = 4
     for entry in history_filtered_data:
         history_day_close_price.append(entry[index_close])
     history_day_close_price =  history_day_close_price[::-1]
@@ -165,21 +165,40 @@ def dashboard():
 @login_required
 def bitgame():
     start_game(datetime.datetime.now())
+    player = Gameplayer.query.filter_by(u_id = current_user.id).first()
+    if player is None:
+        return render_template('bitgame.html', name =current_user.username)
     bit_balance = User.query.filter_by(id = current_user.id).first().game_bit_balance
+    print(bit_balance)
     usd_balance = User.query.filter_by(id = current_user.id).first().game_usd_balance
+    print(get_leaderboard(1,client))
     return render_template('bitgame.html', bit_bal = bit_balance,
-                                        usd_val = usd_balance,
+                                        usd_bal = usd_balance,
                                         name = current_user.username)
 
 @app.route('/bitgame/join')
 @login_required
 def join():
-    player = Gameplayer.query.filter_by(id = current_user.id).first()
+    player = Gameplayer.query.filter_by(u_id = current_user.id).first()
     if not player:
         join_game(current_user.id)
     bit_balance = User.query.filter_by(id = current_user.id).first().game_bit_balance
     usd_balance = User.query.filter_by(id = current_user.id).first().game_usd_balance
+    return redirect(url_for('bitgame', bit_bal = bit_balance,
+                                        usd_bal = usd_balance,
+                                        name = current_user.username))
 
+<<<<<<< HEAD
     return redirect(url_for('bitgame'), bit_bal = bit_balance,
                                         usd_val = usd_balance,
                                         name = current_user.username)
+||||||| merged common ancestors
+    return redirect(url_for('bitgame'), bit_bal = bit_balance,
+                                        usd_val = usd_balance,
+                                        name = current_user.username)
+=======
+@app.route('/bitgame/buy')
+@login_required
+def buy():
+    pass
+>>>>>>> e0872399f499924be75a8e5bb909d9c0592f1054
