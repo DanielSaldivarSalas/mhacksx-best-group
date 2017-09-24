@@ -240,7 +240,8 @@ def dashboard():
                             stats_open = str(round(float(todays_stats['open']),2)),
                             stats_high = str(round(float(todays_stats['high']),2)),
                             stats_low = str(round(float(todays_stats['low']),2)),
-                            stats_volume = str(round(float(todays_stats['volume']),2)))
+                            stats_volume = str(round(float(todays_stats['volume']),2)),
+                            profile_url = current_user.pic_url)
 
 @app.route('/analysis')
 @login_required

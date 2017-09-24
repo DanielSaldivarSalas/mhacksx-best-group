@@ -1,3 +1,12 @@
+<style type="text/css">
+  .deatils {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+    color: black;
+  }
+  .color{
+    background-color: #fdcc52;
+  }
+</style>
 {% extends "bootstrap/base.html" %}
 Bitgame
 {% block title %}
@@ -10,24 +19,20 @@ Bitgame
 
 {% block content %}
      {% include 'includes/_user_navbar.html' %}
-
+ <header class="bg-primary text-white">
+      <div class="container text-center">
+        <br>
+        <h1>Welcome to the Playground</h1>
+        <p class="lead"> <br> </p>
+      </div>
+    </header>
     <div class="container">
 
       <div class="starter-template">
-        <div>
-        <h1>Bitcoin Game</h1>
+        <div >
+        
 
-        <p>Hello {{name}}!</p>
-            {% if bit_bal is defined %}
-            <h3>Current Bitcoin Balance:  {{bit_bal}}</h3>
-            <h3>Current Virtual USD Balance:  {{usd_bal}}</h3>
-
-            <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
-            <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
-            {% else %}
-            <a class="btn btn-lg btn-success" href="/bitgame/join" role="button">Join the Game</a>
-            {% endif %}
-
+        
             <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
             </br>
             </br>
@@ -36,6 +41,31 @@ Bitgame
             <a href="https://twitter.com/intent/tweet?button_hashtag=bitcoin" class="twitter-hashtag-button" data-text="Want to try out your skills trading in a Bitcoin Simulator?? #bitcoin #everybitcounts" data-show-count="false">Tweet #bitcoin</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
           </div>
           </br>
+            <section class="download bg-primary text-center" id="download">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mx-auto color">
+            
+            <h3 style="color:black;">Hello {{name}}!</h3>
+            {% if bit_bal is defined %}
+            <h5 style="color:black;">Current Bitcoin Balance:  {{bit_bal}}</h5>
+            <h5 style="color:black;">Current Virtual USD Balance:  {{usd_bal}}</h5>
+
+            <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
+            <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
+            {% else %}
+            <a class="btn btn-lg btn-success" href="/bitgame/join" role="button">Join the Game</a>
+            {% endif %}
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+            
           <div>
             <h3>Leaderboard</h3>
             <table>
