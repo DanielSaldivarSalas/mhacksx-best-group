@@ -15,17 +15,18 @@ Bitgame
 
       <div class="starter-template">
         <h1>Bitcoin Game</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-        <p>{{name}}</p>
+
+        <p>Hello {{name}}!</p>
             {% if bit_bal is defined %}
-            <p>Current Bitcoin Balance:  {{bit_bal}}</p>
-            <p>Current Virtual USD Balance:  {{usd_bal}}</p>
+            <h3>Current Bitcoin Balance:  {{bit_bal}}</h3>
+            <h3>Current Virtual USD Balance:  {{usd_bal}}</h3>
+
             <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
             <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
             {% else %}
             <button><a href="/bitgame/join">Join the Game</a></button>
             {% endif %}
-
+            <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script><div class="coinmarketcap-currency-widget" data-currency="bitcoin" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-stats="USD" data-statsticker="false"></div>
       </div>
 
     </div><!-- /.container -->
