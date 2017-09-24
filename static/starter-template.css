@@ -30,3 +30,8 @@ background-size: cover;
   margin-bottom: 30px;
   text-align: center;
 }
+
+.index {
+	background-position-y: center;
+	text-align: center;
+}
