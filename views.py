@@ -189,23 +189,6 @@ def join():
                                         name = current_user.username))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/bitgame/buy')
 @login_required
 def bitgame_buy():
