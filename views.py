@@ -98,6 +98,8 @@ def signup():
 
 
     return render_template('signup.html', form=form)
+@app.route('/Playground')
+
 
 def generate_graph(inp_y):
     samples = 200
