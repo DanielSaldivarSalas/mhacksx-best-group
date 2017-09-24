@@ -5,7 +5,9 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
-
+h4 {
+  color:#02C39A;
+}
 div.circle-avatar{
 /* make it responsive */
 max-width: 100%;
