@@ -15,11 +15,12 @@ Bitgame
 
       <div class="starter-template">
         <h1>Bitcoin Game</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-        <p>{{name}}</p>
+
+        <p>Hello {{name}}!</p>
             {% if bit_bal is defined %}
-            <p>Current Bitcoin Balance:  {{bit_bal}}</p>
-            <p>Current Virtual USD Balance:  {{usd_bal}}</p>
+            <h3>Current Bitcoin Balance:  {{bit_bal}}</h3>
+            <h3>Current Virtual USD Balance:  {{usd_bal}}</h3>
+
             <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
             <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
             {% else %}
