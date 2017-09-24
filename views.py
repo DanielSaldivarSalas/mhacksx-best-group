@@ -99,6 +99,8 @@ def signup():
 
     return render_template('signup.html', form=form)
 
+
+
 def generate_graph(inp_y):
     samples = 200
     inp_x =list(range(0,samples))
@@ -186,12 +188,11 @@ def join():
                                         usd_bal = usd_balance,
                                         name = current_user.username))
 
-@app.route('/bitgame/buy')
-@login_required
-def bitgame_buy():
-    return render_template('buy.html')
-
-@app.route('/bitgame/sell')
-@login_required
-def bitgame_sell():
-    return render_template('buy.html')
+<<<<<<< HEAD
+    return redirect(url_for('bitgame'), bit_bal = bit_balance,
+                                        usd_val = usd_balance,
+                                        name = current_user.username)
+||||||| merged common ancestors
+    return redirect(url_for('bitgame'), bit_bal = bit_balance,
+                                        usd_val = usd_balance,
+                                        name = current_user.username)
