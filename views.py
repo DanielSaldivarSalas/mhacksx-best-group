@@ -1,10 +1,11 @@
 from app import app, db
-from flask import render_template, redirect, url_for, session
-from forms import LoginForm, RegisterForm
+from flask import render_template, redirect, url_for, session, request
+from forms import LoginForm, RegisterForm, BuySellBitcoin
 from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
+
 
 import time
 import config
@@ -206,12 +207,29 @@ def join():
 
 
 
-@app.route('/bitgame/buy')
+
+
+
+
+@app.route('/bitgame/buy', methods=['GET','POST'])
 @login_required
 def bitgame_buy():
-    return render_template('buy.html')
+    form = BuySellBitcoin()
+    if request.method == 'POST':
+        buy_bitcoin(form.amount.data ,client,current_user.id)
 
-@app.route('/bitgame/sell')
+        return redirect(url_for('bitgame'))
+    return render_template('buy.html', form=form)
+
+
+
+@app.route('/bitgame/sell', methods=['GET','POST'])
 @login_required
 def bitgame_sell():
-    return render_template('buy.html')
+    form = BuySellBitcoin()
+
+    if request.method == 'POST':
+        sell_bitcoin(form.amount.data ,client,current_user.id)
+
+        return redirect(url_for('bitgame'))
+    return render_template('sell.html', form=form)

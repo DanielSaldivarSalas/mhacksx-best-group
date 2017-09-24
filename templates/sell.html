@@ -13,7 +13,7 @@ Login
 {% block content %}
     <div class="container">
 
-      <form class="form-signin" method="POST" action="/login">
+      <form class="form-signin" method="POST" action="/bitgame/sell">
         <h2 class="form-signin-heading">Selling Bitcoin</h2>
         {{ wtf.form_field(form.amount) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>

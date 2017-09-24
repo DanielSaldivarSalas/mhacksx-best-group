@@ -26,47 +26,47 @@ def join_game(user_id):
 
 
 
-def buy_bitcoin(amount,client):
+def buy_bitcoin(amount,client, user_id):
     bit_price = get_bitcoin_price(client)
-    bitcoin_diff = amount / bit_price
+    bitcoin_diff = float(amount) / float(bit_price)
     usd_diff = (amount)*-1
 
-    current_round = Gameinfo.query.order_by("id").desc().first()
-
+    #current_round = Gameinfo.query.order_by("id").first()
+    current_round = 1
     new_transaction = Usergametransactions(game_round_id = current_round,
                                             amount = amount,
-                                            user_id = current_user.id,
+                                            user_id = user_id,
                                             bitcoin_price = bit_price,
-                                            transaction_time = todays_date,
+                                            transaction_time = datetime.datetime.now(),
                                             transaction_type = True)  #True means buy
     db.session.add(new_transaction)
     db.session.commit()
 
     #Update the balance in the User Model
-    balance = User.query.filter_by(username = current_user.username).first()
+    balance = User.query.filter_by(id = user_id).first()
     balance.game_bit_balance += bitcoin_diff
     balance.game_usd_balance += usd_diff
     db.session.commit()
 
 #amount measured by bitcoin
-def sell_bitcoin(amount,client):
+def sell_bitcoin(amount,client,user_id):
     bit_price = get_bitcoin_price(client)
     bitcoin_diff = amount * -1
     usd_diff = amount * bit_price
 
-    current_round = Gameinfo.query.order_by("id").desc().first()
-
+    #current_round = Gameinfo.query.order_by("id").first()
+    current_round = 1
     new_transaction = Usergametransactions(game_round_id = current_round,
                                             amount = amount,
-                                            user_id = current_user.id,
+                                            user_id = user_id,
                                             bitcoin_price = bit_price,
-                                            transaction_time = todays_date,
+                                            transaction_time = datetime.datetime.now(),
                                             transaction_type = False)  #False means sell
     db.session.add(new_transaction)
     db.session.commit()
 
     #Update the balance in the User Model
-    balance = User.query.filter_by(username = current_user.username).first()
+    balance = User.query.filter_by(id = user_id).first()
     balance.game_bit_balance += bitcoin_diff
     balance.game_usd_balance += usd_diff
     db.session.commit()

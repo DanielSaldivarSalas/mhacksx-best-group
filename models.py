@@ -24,7 +24,7 @@ class Usergametransactions(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     game_round_id = db.Column(db.Integer, db.ForeignKey('gameinfo.id'))
-    amout = db.Column(db.Float)
+    amount = db.Column(db.Float)
     bitcoin_price = db.Column(db.Float)
     transaction_time = db.Column(db.DateTime)
     transaction_type = db.Column(db.Boolean)

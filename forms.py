@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, DecimalField, FloatField
 from wtforms.validators import InputRequired, Email, Length
 
 class LoginForm(FlaskForm):
@@ -14,13 +14,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
     pic_url = StringField('pic_url')
 
-'''
-class BuyBitcoin(Form):
-    'bitcoin/sell'
-    amount = float
 
-
-class SellBitcoin(Form):
-    ' bitgame/sell'
-    amount = float
-'''
+class BuySellBitcoin(FlaskForm):
+    'bitcoin/sell and bitcoin/buy'
+    amount = FloatField('amount', validators=[InputRequired()])

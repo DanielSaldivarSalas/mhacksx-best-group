@@ -20,9 +20,12 @@ Bitgame
             {% if bit_bal is defined %}
             <p>Current Bitcoin Balance:  {{bit_bal}}</p>
             <p>Current Virtual USD Balance:  {{usd_bal}}</p>
+            <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
+            <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
             {% else %}
             <button><a href="/bitgame/join">Join the Game</a></button>
             {% endif %}
+
       </div>
 
     </div><!-- /.container -->
