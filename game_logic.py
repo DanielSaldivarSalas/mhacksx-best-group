@@ -26,8 +26,8 @@ def join_game(user_id):
 
 
 
-def buy_bitcoin(amount):
-    bit_price = get_bitcoin_price()
+def buy_bitcoin(amount,client):
+    bit_price = get_bitcoin_price(client)
     bitcoin_diff = amount / bit_price
     usd_diff = (amount)*-1
 
@@ -49,8 +49,8 @@ def buy_bitcoin(amount):
     db.session.commit()
 
 #amount measured by bitcoin
-def sell_bitcoin(amount):
-    bit_price = get_bitcoin_price()
+def sell_bitcoin(amount,client):
+    bit_price = get_bitcoin_price(client)
     bitcoin_diff = amount * -1
     usd_diff = amount * bit_price
 
@@ -71,13 +71,13 @@ def sell_bitcoin(amount):
     balance.game_usd_balance += usd_diff
     db.session.commit()
 
-def get_bitcoin_price():
+def get_bitcoin_price(client):
     """
     Input: None
-    return type: Int
+    return type: float
     """
     todays_date = str(datetime.datetime.now())[:10]
-    client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version= todays_date)
+    #client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version= todays_date)
 
 
     current_bitcoin_price = client.get_spot_price(currency=currency_code)
@@ -86,3 +86,20 @@ def get_bitcoin_price():
 
 
     return float(current_bitcoin_price['amount'])
+
+def get_leaderboard(round_id,client):
+    #out put a list of Users
+    player_ranks = []
+    players = Gameplayer.query.filter_by(r_id = round_id)
+    for x in players:
+        player_ranks.append({get_total_balance(x.u_id,client), x.u_id})
+    player_ranks.sort(reverse = True)
+    print(player_ranks)
+    return player_ranks
+
+
+
+def get_total_balance(user_id,client):
+    currUser = User.query.filter_by(id = user_id).first()
+    balance = currUser.game_usd_balance + currUser.game_bit_balance * get_bitcoin_price(client)
+    return balance
