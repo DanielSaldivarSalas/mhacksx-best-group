@@ -19,5 +19,8 @@ CB_API_SECRET = "eXFKOkiLqf47WKsvt5dDgoJAuF3VWFfW"
 #PL_KEY = 'RihaoKang'
 #PL_SECRET = 'R8ZY1frPW21K5amUegUp'
 
-PL_KEY = 'shervineecb6e'
-PL_SECRET = 'znEgYliI2HzFI2czrpT7'
+# PL_KEY = 'shervineecb6e'
+# PL_SECRET = 'znEgYliI2HzFI2czrpT7'
+
+PL_KEY = 'huskyme'
+PL_SECRET = 'zvx3Sm0kcFiupIJ0DTCB'

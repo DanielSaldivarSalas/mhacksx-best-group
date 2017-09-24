@@ -52,14 +52,14 @@ def index():
     #what could have been gained/lost
     investment = compute.bit_coin_value(income, all_history[0])
     savings = compute.saving_acc(income, all_history[0])
-    generate_graph_duo(investment, savings, 'prev-investment')
+    generate_graph_duo(investment, savings, 'prev-investment', "5pc Investment in Bitcoin vs No investment")
 
     aroon_high = compute.aroon_high(all_history[2])
     aroon_low = compute.aroon_low(all_history[1])
-    generate_graph_duo(aroon_low, aroon_high, 'aroon-indicator')
+    generate_graph_duo(aroon_low, aroon_high, 'aroon-indicator', "Aroon Indicators")
 
     sma = compute.twenty_days_SMA(all_history[0])
-    generate_graph_duo(sma, all_history[0],'moving-avg')
+    generate_graph_duo(sma, all_history[0],'moving-avg', "Moving Average")
 
     return render_template('index.html')
 
@@ -123,18 +123,24 @@ def generate_graph(inp_y, title):
     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     data = [trace]
     layout  = go.Layout(
-        title=title,
-        xaxis=dict(
-        title='x Axis',
+        title=dict(
+        title='Time (Days)',
         titlefont=dict(
             size=18,
             color='#7f7f7f'
             )
             ),
+        xaxis=dict(
+        title='Time (Days)',
+        titlefont=dict(
+            size=16,
+            color='#7f7f7f'
+            )
+            ),
         yaxis=dict(
-            title='y Axis',
+            title='Bitcoin value ($)',
             titlefont=dict(
-            size=18,
+            size=16,
             color='#7f7f7f'
             )
             )
@@ -149,13 +155,31 @@ def generate_graph(inp_y, title):
 #     data = [trace]
 #     py.plot(data, filename='bit-history', auto_open=False)
 
-def generate_graph_duo(inp_y, inp_y2, name):
+def generate_graph_duo(inp_y, inp_y2, name, title):
     samples = 200
     inp_x =list(range(0,samples))
     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     trace2 = go.Scatter(x = inp_x, y = inp_y2, fill='tonexty', mode ='none')
     data = [trace, trace2]
-    py.plot(data, filename=name, auto_open=False)
+    layout  = go.Layout(
+        title=title,
+        xaxis=dict(
+        title='Time (Days)',
+        titlefont=dict(
+            size=16,
+            color='#7f7f7f'
+            )
+            ),
+        yaxis=dict(
+            title='Value ($)',
+            titlefont=dict(
+            size=16,
+            color='#7f7f7f'
+            )
+            )
+    )
+    fig = go.Figure(data = data, layout = layout)
+    py.plot(fig, filename=name, auto_open=False)
 
 def get_todays_stats():
     return requests.get(GDAX_ENDPOINT + '/products/' + digital_type + '/stats').text

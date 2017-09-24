@@ -117,7 +117,7 @@ def aroon_low(daily_low):
 
 def twenty_days_SMA(Bit_price_lst):
    SMA20 = []
-   for i in range(0,165):
+   for i in range(0,200):
        mean = round(mean_helper(Bit_price_lst[i:i+20]),2)
        SMA20.append(mean)
    return SMA20
