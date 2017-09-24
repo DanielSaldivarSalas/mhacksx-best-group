@@ -1,8 +1,12 @@
 <!-- Plotly.js for plotting the graph-->
 <style>
   .header{
-    color:#02C39A;
+    color:#70004A;
   }
+  .bg-primary {
+    background-color: #F2F5C9;
+  }
+  body { background:khaki !important; }
 </style>
 
 
@@ -19,14 +23,13 @@ Demo App
 
 {% block content %}
     {% include 'includes/_home_navbar.html' %}
-
     <div class="container">
 
       <div class="starter-template">
         <div class="row">
           <!-- second box -->
           <div class="col-md-4">
-            <h4 class="header"><a href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/">Younger Americans See Bitcoin As Investment Opportunity</a></h4>
+            <h4 class="header">Younger Americans See Bitcoin As Investment Opportunity</h4>
              <p><small class="text-muted">A new survey recently conducted by Lend Edu polled Americans about their interest in bitcoin. The survey asked basic questions
             about whether...</small></p>
               <p><a class="btn btn-secondary" href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/"
@@ -34,7 +37,7 @@ Demo App
           </div>
           <!-- First box -->
           <div class="col-md-4">
-            <h4><a href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html">Benefit of Investing Bitcoin</a></h4>
+            <h4 class="header">Benefit of Investing Bitcoin</h4>
             <br>
             <p><small class="text-muted">What are the main advantages of Bitcoin? What Bitcoin has that other currency systems are not able to provide?</small></p>
             <p><a class="btn btn-secondary" href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html"
