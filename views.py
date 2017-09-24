@@ -188,5 +188,10 @@ def join():
 
 @app.route('/bitgame/buy')
 @login_required
-def buy():
-    pass
+def bitgame_buy():
+    return render_template('buy.html')
+
+@app.route('/bitgame/sell')
+@login_required
+def bitgame_sell():
+    return render_template('buy.html')
