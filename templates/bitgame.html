@@ -25,7 +25,7 @@ Bitgame
             <button><a href="/bitgame/buy">Buy Bitcoin</a></button>
             <button><a href="/bitgame/sell">Sell Bitcoin</a></button>
             {% else %}
-            <button><a href="/bitgame/join">Join the Game</a></button>
+            <a class="btn btn-lg btn-success" href="/bitgame/join" role="button">Join the Game</a>
             {% endif %}
 
             <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
@@ -37,6 +37,7 @@ Bitgame
           </div>
           </br>
           <div>
+            <h3>Leaderboard</h3>
             <table>
               <tr>
                 <th>User</th>
@@ -52,7 +53,8 @@ Bitgame
             {% endfor %}
             </table>
           </br>
-
+          <h3>Transaction History
+          </h3>
           <table>
             <tr>
               <th>Time</th>
