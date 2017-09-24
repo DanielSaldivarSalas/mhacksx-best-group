@@ -53,7 +53,6 @@ def bit_coin_value(deposit, bit_value):
             value_data.append(value)
                     
     for i in range (180,199):
-        print(i)
         value = 7 * saving + investing * (bit_value[i] / bit_value [0] +  bit_value[i]/bit_value[29] + bit_value[i]/bit_value[59] +  bit_value[i]/bit_value[89] + bit_value[i]/bit_value[119] + bit_value[i]/bit_value[149] + bit_value[i]/bit_value[179])
         value_data.append(value)                      
 
@@ -69,3 +68,59 @@ def saving_acc(deposit, bit_value):
         else:
             saving_data.append((j+1) * deposit)
     return saving_data
+
+def mean_helper(lst):
+   return (sum(lst)/len(lst))
+
+date = []
+
+for i in range (20,201):
+    date.append(i) 
+
+
+def aroon_high(daily_high):
+    # this function will product the high arron indicator
+    # use it as green color for industry standard
+    aroon = []
+    i = 0
+    for j in range (20,200):
+        
+        aroon_value = mean_helper(daily_high[i:i+20])
+        aroon.append(aroon_value)
+        i = i + 1
+    return aroon
+
+def aroon_low(daily_low):
+    aroon_l = []
+    i = 0
+    # this function will product the low arron indicator
+    # use it as red color for industry standard
+    for j in range (20,200):
+        aroon_value = mean_helper(daily_low[i:i+20])
+        aroon_l.append(aroon_value)
+        i = i + 1
+    return aroon_l    
+
+# x axis will be date, start from 20 all the way to 200
+# y axis will be aroon and aroon low
+
+
+# note: indicator system determine the stock is trending or not, and how strong the trend will be
+# X day high or x day or low, spot emergen trend, define correction period, anticipate reversal
+# aroon up green
+# aroon down red
+# range from 0 - 100
+# 50 line is important
+# aroon up cross aroon down, uptrend
+# both line going down, consolidation
+# aroon down is crossing aroon up show the trend is going down
+
+def twenty_days_SMA(Bit_price_lst):
+   SMA20 = []
+   for i in range(0,165):
+       mean = round(mean_helper(Bit_price_lst[i:i+20]),2)
+       SMA20.append(mean)
+   return SMA20
+
+def mean_helper(lst):
+   return (sum(lst)/len(lst))
