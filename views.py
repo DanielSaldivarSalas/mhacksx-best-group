@@ -164,6 +164,10 @@ def dashboard():
                             stats_low = str(round(float(todays_stats['low']),2)),
                             stats_volume = str(round(float(todays_stats['volume']),2)))
 
+@app.route('/analysis')
+@login_required
+def analysis():
+    return render_template('analysis.html', name =current_user.username)
 @app.route('/bitgame')
 @login_required
 def bitgame():

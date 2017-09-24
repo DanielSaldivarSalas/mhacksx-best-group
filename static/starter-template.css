@@ -5,8 +5,10 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
-h4 {
+.h4 {
   color:#02C39A;
+  margin-top: $line-height-computed;
+  margin-bottom: ($line-height-computed / 2);
 }
 div.circle-avatar{
 /* make it responsive */
