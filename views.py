@@ -92,7 +92,7 @@ def signup():
                         password=hashed_password,
                         pic_url =form.pic_url.data,
                         game_bit_balance = 0.00,
-                        game_usd_balance = 100.00)
+                        game_usd_balance = 100000.00)
 
         db.session.add(new_user)
         db.session.commit()
