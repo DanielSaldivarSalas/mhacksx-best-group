@@ -1,6 +1,13 @@
 <!-- Plotly.js for plotting the graph-->
-<header>
-</header>
+<style>
+  .header{
+    color:#70004A;
+  }
+  .bg-primary {
+    background-color: #F2F5C9;
+  }
+  body { background:khaki !important; }
+</style>
 
 
 {% extends "bootstrap/base.html" %}
@@ -16,14 +23,13 @@ Demo App
 
 {% block content %}
     {% include 'includes/_home_navbar.html' %}
-
     <div class="container">
 
       <div class="starter-template">
         <div class="row">
           <!-- second box -->
           <div class="col-md-4">
-            <h4 style="color:Black;"><a href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/">Younger Americans See Bitcoin As Investment Opportunity</a></h4>
+            <h4 class="header">Younger Americans See Bitcoin As Investment Opportunity</h4>
              <p><small class="text-muted">A new survey recently conducted by Lend Edu polled Americans about their interest in bitcoin. The survey asked basic questions
             about whether...</small></p>
               <p><a class="btn btn-secondary" href="https://news.bitcoin.com/younger-americans-bitcoin-investment-opportunity-survey-says/"
@@ -31,7 +37,7 @@ Demo App
           </div>
           <!-- First box -->
           <div class="col-md-4">
-            <h4><a href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html">Benefit of Investing Bitcoin</a></h4>
+            <h4 class="header">Benefit of Investing Bitcoin</h4>
             <br>
             <p><small class="text-muted">What are the main advantages of Bitcoin? What Bitcoin has that other currency systems are not able to provide?</small></p>
             <p><a class="btn btn-secondary" href="http://cs.stanford.edu/people/eroberts/cs181/projects/2010-11/DigitalCurrencies/advantages/index.html"
@@ -39,7 +45,7 @@ Demo App
           </div>
           <!-- third box -->
           <div class="col-md-4">
-            <h4 style="color:Black;"><a href="https://cointelegraph.com/news/does-bitcoin-meet-the-test-for-being-money">Does Bitcoin Meet the Test for Being Money?</a></h4>
+            <h4 class="header"> Does Bitcoin Meet the Test for Being Money?</a></h4>
               <p><small class="text-muted">How Bitcoin has become a popular currency in depth, what's the future of it and what should everyone know before investing in Bitcoin</small></p>
               <p><a class="btn btn-secondary" href="https://cointelegraph.com/news/does-bitcoin-meet-the-test-for-being-money"
                   role="button">Read More »</a></p>
@@ -52,10 +58,7 @@ Demo App
         </div>
       </div>
     </div><!-- /.container -->
-    <div class="starter-template index">
-      <iframe width="80%" height="450" frameborder="0" 
-            scrolling="no" src="//plot.ly/~shervinee/0.embed"></iframe>
-    </div>
+    
 
 {% endblock %}
 

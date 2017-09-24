@@ -90,12 +90,23 @@ def get_bitcoin_price(client):
 def get_leaderboard(round_id,client):
     #out put a list of Users
     player_ranks = []
+    bal_dic = {}
+    leaderboard = []
     players = Gameplayer.query.filter_by(r_id = round_id)
     for x in players:
         player_ranks.append({get_total_balance(x.u_id,client), x.u_id})
+        bal_dic[get_total_balance(x.u_id,client)] = x.u_id
     player_ranks.sort(reverse = True)
-    print(player_ranks)
-    return player_ranks
+    #print(player_ranks)
+    #print(bal_dic)
+    i = 1
+    for key in sorted(bal_dic, reverse = True):
+        user_name = User.query.filter_by(id = bal_dic[key]).first().username
+        leaderboard.append([user_name, key, i])
+        i += 1
+    print(leaderboard)
+    #return list of lists
+    return leaderboard
 
 
 
@@ -103,3 +114,14 @@ def get_total_balance(user_id,client):
     currUser = User.query.filter_by(id = user_id).first()
     balance = currUser.game_usd_balance + currUser.game_bit_balance * get_bitcoin_price(client)
     return balance
+
+def get_transaction(user_id):
+    transactions = Usergametransactions.query.filter_by(user_id = user_id)
+    history = []
+    for x in transactions:
+        if x.transaction_type:
+            history.append([str(x.transaction_time), "Buy", x.amount, x.bitcoin_price])
+        else:
+            history.append([str(x.transaction_time), "Sell", x.amount, x.bitcoin_price])
+    print(history)
+    return history
