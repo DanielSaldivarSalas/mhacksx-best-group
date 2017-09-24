@@ -46,13 +46,20 @@ def load_user(user_id):
 @app.route('/')
 def index():
     #history stats
-    history = get_history_stats()
-    generate_graph(history)
+    all_history = get_history_stats()
+    generate_graph(all_history[0])
 
     #what could have been gained/lost
-    investment = compute.bit_coin_value(income, history)
-    savings = compute.saving_acc(income, history)
-    generate_graph_duo(investment, savings)
+    investment = compute.bit_coin_value(income, all_history[0])
+    savings = compute.saving_acc(income, all_history[0])
+    generate_graph_duo(investment, savings, 'prev-investment')
+
+    aroon_high = compute.aroon_high(all_history[2])
+    aroon_low = compute.aroon_low(all_history[1])
+    generate_graph_duo(aroon_low, aroon_high, 'aroon-indicator')
+
+    sma = compute.twenty_days_SMA(all_history[0])
+    generate_graph_duo(sma, all_history[0],'moving-avg')
 
     return render_template('index.html')
 
@@ -124,13 +131,13 @@ def generate_graph(inp_y):
     data = [trace]
     py.plot(data, filename='bit-history', auto_open=False)
 
-def generate_graph_duo(inp_y, inp_y2):
+def generate_graph_duo(inp_y, inp_y2, name):
     samples = 200
     inp_x =list(range(0,samples))
     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     trace2 = go.Scatter(x = inp_x, y = inp_y2, fill='tonexty', mode ='none')
     data = [trace, trace2]
-    py.plot(data, filename='prev-investment', auto_open=False)
+    py.plot(data, filename=name, auto_open=False)
 
 def get_todays_stats():
     return requests.get(GDAX_ENDPOINT + '/products/' + digital_type + '/stats').text
@@ -151,12 +158,24 @@ def get_history_stats():
         + 'end=' + end + '&'
         +'granularity=' + gran).text
     history_day_close_price = []
+    history_day_high_price = []
+    history_day_low_price = []
     history_filtered_data = json.loads(history)
     index_close = 4
+    index_high = 2
+    index_low = 1
+    all_history_stats = []
     for entry in history_filtered_data:
         history_day_close_price.append(entry[index_close])
+        history_day_high_price.append(entry[index_high])
+        history_day_low_price.append(entry[index_low])
     history_day_close_price =  history_day_close_price[::-1]
-    return history_day_close_price
+    history_day_low_price =  history_day_low_price[::-1]
+    history_day_high_price =  history_day_high_price[::-1]
+    all_history_stats.append(history_day_close_price) #0
+    all_history_stats.append(history_day_low_price) #1
+    all_history_stats.append(history_day_high_price) #2
+    return all_history_stats
 
 @app.route('/dashboard')
 @login_required
