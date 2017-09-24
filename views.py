@@ -47,7 +47,7 @@ def load_user(user_id):
 def index():
     #history stats
     all_history = get_history_stats()
-    generate_graph(all_history[0])
+    generate_graph(all_history[0],"Bitcoin Prices")
 
     #what could have been gained/lost
     investment = compute.bit_coin_value(income, all_history[0])
@@ -117,19 +117,37 @@ def signup():
 
 
 
-def generate_graph(inp_y):
+def generate_graph(inp_y, title):
     samples = 200
     inp_x =list(range(0,samples))
     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     data = [trace]
-    py.plot(data, filename='bit-history', auto_open=False)
+    layout  = go.Layout(
+        title=title,
+        xaxis=dict(
+        title='x Axis',
+        titlefont=dict(
+            size=18,
+            color='#7f7f7f'
+            )
+            ),
+        yaxis=dict(
+            title='y Axis',
+            titlefont=dict(
+            size=18,
+            color='#7f7f7f'
+            )
+            )
+    )
+    fig = go.Figure(data = data, layout = layout)
+    py.plot(fig, filename='bit-history', auto_open=False)
 
-def generate_graph(inp_y):
-    samples = 200
-    inp_x =list(range(0,samples))
-    trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
-    data = [trace]
-    py.plot(data, filename='bit-history', auto_open=False)
+# def generate_graph(inp_y):
+#     samples = 200
+#     inp_x =list(range(0,samples))
+#     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
+#     data = [trace]
+#     py.plot(data, filename='bit-history', auto_open=False)
 
 def generate_graph_duo(inp_y, inp_y2, name):
     samples = 200
