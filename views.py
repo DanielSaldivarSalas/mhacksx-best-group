@@ -1,6 +1,6 @@
 from app import app, db
-from flask import render_template, redirect, url_for, session
-from forms import LoginForm, RegisterForm
+from flask import render_template, redirect, url_for, session, request
+from forms import LoginForm, RegisterForm, BuySellBitcoin
 from models import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -100,7 +100,7 @@ def signup():
                         password=hashed_password,
                         pic_url =form.pic_url.data,
                         game_bit_balance = 0.00,
-                        game_usd_balance = 100.00)
+                        game_usd_balance = 100000.00)
 
         db.session.add(new_user)
         db.session.commit()
@@ -168,8 +168,8 @@ def dashboard():
     data = get_todays_stats();
     todays_stats = json.loads(data)
 
-    
-    
+
+
 
     return render_template('dashboard.html',
                             name=current_user.username,
@@ -181,6 +181,10 @@ def dashboard():
                             stats_low = str(round(float(todays_stats['low']),2)),
                             stats_volume = str(round(float(todays_stats['volume']),2)))
 
+@app.route('/analysis')
+@login_required
+def analysis():
+    return render_template('analysis.html', name =current_user.username)
 @app.route('/bitgame')
 @login_required
 def bitgame():
@@ -209,12 +213,46 @@ def join():
                                         name = current_user.username))
 
 
-@app.route('/bitgame/buy')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/bitgame/buy', methods=['GET','POST'])
 @login_required
 def bitgame_buy():
-    return render_template('buy.html')
+    form = BuySellBitcoin()
+    if request.method == 'POST':
+        buy_bitcoin(form.amount.data ,client,current_user.id)
 
-@app.route('/bitgame/sell')
+        return redirect(url_for('bitgame'))
+    return render_template('buy.html', form=form)
+
+
+
+@app.route('/bitgame/sell', methods=['GET','POST'])
 @login_required
 def bitgame_sell():
-    return render_template('buy.html')
+    form = BuySellBitcoin()
+
+    if request.method == 'POST':
+        sell_bitcoin(form.amount.data ,client,current_user.id)
+
+        return redirect(url_for('bitgame'))
+    return render_template('sell.html', form=form)

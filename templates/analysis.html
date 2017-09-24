@@ -1,0 +1,25 @@
+{% extends "bootstrap/base.html" %} 
+
+{% block title %} Analysis {% endblock %} 
+
+{% block styles %} 
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='analysis.css')}}"> 
+{% endblock %} 
+
+{% block content %} 
+
+{% include 'includes/_user_navbar.html' %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">Here is your updated Analysis, {{ name }}</h1>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
