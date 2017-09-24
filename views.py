@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from coinbase.wallet.client import Client
 
+
 import time
 import config
 import datetime
@@ -19,6 +20,7 @@ import plotly.tools as tls
 py.plotly.tools.set_credentials_file(username=config.PL_KEY, api_key=config.PL_SECRET)
 
 from game_logic import *
+import compute_logic as compute
 
 
 client = Client(config.CB_API_KEY, config.CB_API_SECRET, api_version='2017-09-22')
@@ -33,6 +35,7 @@ digital_type ='BTC-USD'
 month = 570
 month_in_sec = 2629746
 interval = 200
+income = 2000 #$
 # = 39450
 
 @login_manager.user_loader
@@ -43,8 +46,14 @@ def load_user(user_id):
 @app.route('/')
 def index():
     #history stats
-    history = get_history_stats();
-    generate_graph(history);
+    history = get_history_stats()
+    generate_graph(history)
+
+    #what could have been gained/lost
+    investment = compute.bit_coin_value(income, history)
+    savings = compute.saving_acc(income, history)
+    generate_graph_duo(investment, savings)
+
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -97,9 +106,6 @@ def signup():
         db.session.commit()
 
         return redirect(url_for('login'))
-        #return '<p>{}</p><p>{}</p><p>{}</p><h1>'.format(form.email.data, form.username.data, form.password.data)
-
-
     return render_template('signup.html', form=form)
 
 
@@ -110,6 +116,21 @@ def generate_graph(inp_y):
     trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     data = [trace]
     py.plot(data, filename='bit-history', auto_open=False)
+
+def generate_graph(inp_y):
+    samples = 200
+    inp_x =list(range(0,samples))
+    trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
+    data = [trace]
+    py.plot(data, filename='bit-history', auto_open=False)
+
+def generate_graph_duo(inp_y, inp_y2):
+    samples = 200
+    inp_x =list(range(0,samples))
+    trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
+    trace2 = go.Scatter(x = inp_x, y = inp_y2, fill='tonexty', mode ='none')
+    data = [trace, trace2]
+    py.plot(data, filename='prev-investment', auto_open=False)
 
 def get_todays_stats():
     return requests.get(GDAX_ENDPOINT + '/products/' + digital_type + '/stats').text
@@ -123,13 +144,12 @@ def get_history_stats():
     start_time_ISO = datetime.datetime.utcfromtimestamp(month_in_sec*month).isoformat() + 'Z'
     end = current_time_ISO
     start = start_time_ISO
-    gran = str(int(month_in_sec*gran_limit_factor))
+    gran = str(int(month_in_sec*gran_limit_factor)-12435)
     history = requests.get(GDAX_ENDPOINT + '/products/'
         + digital_type + '/candles?'
         + 'start=' + start + '&'
         + 'end=' + end + '&'
         +'granularity=' + gran).text
-
     history_day_close_price = []
     history_filtered_data = json.loads(history)
     index_close = 4
@@ -137,8 +157,6 @@ def get_history_stats():
         history_day_close_price.append(entry[index_close])
     history_day_close_price =  history_day_close_price[::-1]
     return history_day_close_price
-
-
 
 @app.route('/dashboard')
 @login_required

@@ -5,3 +5,5 @@ Flask-Login
 Flask-WTF
 coinbase
 plotly
+pandas
+cufflinks
