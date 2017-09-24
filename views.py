@@ -42,6 +42,9 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+    #history stats
+    history = get_history_stats();
+    generate_graph(history);
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -104,7 +107,7 @@ def signup():
 def generate_graph(inp_y):
     samples = 200
     inp_x =list(range(0,samples))
-    trace = go.Scatter(x = inp_x, y = inp_y)
+    trace = go.Scatter(x = inp_x, y = inp_y, fill='tozeroy', mode ='none')
     data = [trace]
     py.plot(data, filename='bit-history', auto_open=False)
 
@@ -147,9 +150,8 @@ def dashboard():
     data = get_todays_stats();
     todays_stats = json.loads(data)
 
-    #history stats
-    history = get_history_stats();
-    generate_graph(history);
+    
+    
 
     return render_template('dashboard.html',
                             name=current_user.username,
